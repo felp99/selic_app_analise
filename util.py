@@ -4,11 +4,15 @@ class Utils():
 
     def __init__(self) -> None:
         
+        self.APP_TITLE = 'Renda Fixa App'
+        self.APP_EMOJI = '💲'
         self.NAME = 'Selecione uma página'
+        self.INVESTIMENTO_LABEL = '💰 Investimento:'
+        self.INVESTIMENTO_INICIAL_VALOR = 1000.00
         pass
 
     def run(self):
-        st.warning('Selecione uma página para ser visualizada')
+        st.warning('Selecione uma página para ser visualizada.')
 
     def varString(self, actual, last):
         return f'{round((last - actual)/last * 100, 2)}%'

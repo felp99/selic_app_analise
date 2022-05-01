@@ -4,20 +4,22 @@ import streamlit as st
 
 # Externos
 from simulationROI import simulationROIComponent
+from comparative import ComparativeComponent
 from util import Utils
 
-utilsVariables = Utils()
+utils = Utils()
 simulationROI = simulationROIComponent()
+comparative = ComparativeComponent()
 
-COMPONENTES = [utilsVariables, simulationROI]
+COMPONENTES = [utils, simulationROI, comparative]
 
-st.set_page_config(page_title='Selic App',
-                   page_icon='💸', 
+st.set_page_config(page_title=utils.APP_TITLE,
+                   page_icon=utils.APP_EMOJI, 
                    layout="centered", 
                    initial_sidebar_state="expanded", 
                    menu_items=None)
 
-st.title('Selic App 💸')
+st.title(utils.APP_EMOJI + '' + utils.APP_TITLE)
 
 with st.sidebar:
     selected_component = st.selectbox(label = 'Selecione a página:', 

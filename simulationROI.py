@@ -5,13 +5,13 @@ import pandas as pd
 
 from util import Utils
 
-utilsVariables = Utils()
+utils = Utils()
 
 class simulationROIComponent():
 
     def __init__(self) -> None:
         
-        self.NAME = 'Simulação Retorno Atual'
+        self.NAME = '📠 Simulação Retorno'
         self.INFO = 'Simula o retorno de um investimento dada a taxa SELIC atual.'
         self.PICPAY = 105
         self.PICPAY_MULT = 1.05
@@ -24,12 +24,12 @@ class simulationROIComponent():
 
         with st.sidebar:
 
-            st.markdown('___')
-
-            st.subheader('📠 Simulação:')
             PLATAFORMA = st.radio('Selecione a plataforma de investimento:',
                                 options= self.PLATAFORMA_OPTIONS)
-            INVESTIMENTO = st.number_input(label='💰 Investimento:', value=1000.00, step = 100.00)
+                                
+            INVESTIMENTO = st.number_input(label = utils.INVESTIMENTO_LABEL,
+                                           value=utils.INVESTIMENTO_INICIAL_VALOR,
+                                           step = 100.00)
 
         if PLATAFORMA == self.PLATAFORMA_OPTIONS[1]:
             with st.sidebar:
@@ -88,7 +88,7 @@ class simulationROIComponent():
                             'Mensal',
                             'Anual']
 
-            utilsVariables.kpi(valuesTaxas, stringsTaxas, utilsVariables.perc)
+            utils.kpi(valuesTaxas, stringsTaxas, utils.perc)
 
         if PLATAFORMA == self.PLATAFORMA_OPTIONS[0]:
 
@@ -130,7 +130,7 @@ class simulationROIComponent():
                         'Mensal',
                         'Anual']
 
-            utilsVariables.kpi(valuesRent, stringsRent, utilsVariables.perc)
+            utils.kpi(valuesRent, stringsRent, utils.perc)
 
         with st.expander('📈 ROI', expanded=True):
 
@@ -139,4 +139,4 @@ class simulationROIComponent():
                         'Mensal',
                         'Anual']
 
-            utilsVariables.kpi(valuesROI, stringsROI, utilsVariables.currFormat)
+            utils.kpi(valuesROI, stringsROI, utils.currFormat)
