@@ -3,11 +3,15 @@ import requests
 import util
 import pandas as pd
 
+from util import Utils
+
+utilsVariables = Utils()
+
 class simulationROIComponent():
 
     def __init__(self) -> None:
         
-        self.NAME = 'Simulação ROI atual'
+        self.NAME = 'Simulação Retorno Atual'
         self.INFO = 'Simula o retorno de um investimento dada a taxa SELIC atual.'
         self.PICPAY = 105
         self.PICPAY_MULT = 1.05
@@ -16,11 +20,9 @@ class simulationROIComponent():
         
         self.PLATAFORMA_OPTIONS = ['💚 Picpay', '💜 Nubank']
 
+    def run(self):
+
         with st.sidebar:
-
-            st.subheader('🎲 Dados:')
-
-            SELIC_TAXAS = st.checkbox('Mostrar dados sobre a SELIC hoje.')
 
             st.markdown('___')
 
@@ -79,15 +81,14 @@ class simulationROIComponent():
         taxa_mensal = ((taxa_hoje/100 + 1) ** 22) -1 
         taxa_anual =  ((taxa_hoje/100 + 1) ** 254) -1
 
-        if SELIC_TAXAS:
-            with st.expander('📊 Taxas atuais SELIC', expanded=True):
+        with st.expander('📊 Taxas atuais SELIC', expanded=True):
 
-                valuesTaxas = [taxa_diaria, taxa_mensal, taxa_anual]
-                stringsTaxas = ['Diária',
-                                'Mensal',
-                                'Anual']
+            valuesTaxas = [taxa_diaria, taxa_mensal, taxa_anual]
+            stringsTaxas = ['Diária',
+                            'Mensal',
+                            'Anual']
 
-                util.kpi(valuesTaxas, stringsTaxas, util.perc)
+            utilsVariables.kpi(valuesTaxas, stringsTaxas, utilsVariables.perc)
 
         if PLATAFORMA == self.PLATAFORMA_OPTIONS[0]:
 
@@ -129,7 +130,7 @@ class simulationROIComponent():
                         'Mensal',
                         'Anual']
 
-            util.kpi(valuesRent, stringsRent, util.perc)
+            utilsVariables.kpi(valuesRent, stringsRent, utilsVariables.perc)
 
         with st.expander('📈 ROI', expanded=True):
 
@@ -138,4 +139,4 @@ class simulationROIComponent():
                         'Mensal',
                         'Anual']
 
-            util.kpi(valuesROI, stringsROI, util.currFormat)
+            utilsVariables.kpi(valuesROI, stringsROI, utilsVariables.currFormat)
