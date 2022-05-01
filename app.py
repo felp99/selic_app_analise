@@ -18,7 +18,7 @@ plataforma_options = ['💚 Picpay', '💜 Nubank']
 
 # Bônus PICPAY até 100 mil reais
 PICPAY = 105
-IR_PICPAY = 22.32
+IR_PICPAY = 22.5
 
 with st.sidebar:
 
@@ -33,7 +33,7 @@ with st.sidebar:
     st.subheader('📠 Simulação:')
     PLATAFORMA = st.radio('Selecione a plataforma de investimento:',
                            options= plataforma_options)
-    INVESTIMENTO = st.number_input(label='💰 Investimento:', value=1000, step = 100, format='%i')
+    INVESTIMENTO = st.number_input(label='💰 Investimento:', value=1000.00, step = 100.00)
 
 st.title('Selic App 💸')
 
@@ -94,7 +94,7 @@ taxa_mensal = ((taxa_hoje/100 + 1) ** 22) -1
 taxa_anual =  ((taxa_hoje/100 + 1) ** 254) -1
 
 if SELIC_TAXAS:
-    with st.expander('📊 Taxas atuais SELIC'):
+    with st.expander('📊 Taxas atuais SELIC', expanded=True):
 
         valuesTaxas = [taxa_diaria, taxa_mensal, taxa_anual]
         stringsTaxas = ['Diária',
@@ -111,13 +111,33 @@ if PLATAFORMA == plataforma_options[0]:
     mensal = taxa_mensal * PICPAY/100 * (1-(IR_PICPAY/100))
     anual = taxa_anual * PICPAY/100 * (1-(IR_PICPAY/100))
 
+    if INVESTIMENTO > 10**5:
+
+        title = '💹 Taxas Picpay | Considerando Bônus nos 100k & Imposto de Renda'
+
+        EXC_INVESTIMENTO = INVESTIMENTO - 10**5
+
+        diaria_bonus = taxa_diaria * PICPAY/100 * (1-(IR_PICPAY/100))
+        mensal_bonus = taxa_mensal * PICPAY/100 * (1-(IR_PICPAY/100))
+        anual_bonus = taxa_anual * PICPAY/100 * (1-(IR_PICPAY/100))
+
+        diaria_padrao = taxa_diaria * (1-(IR_PICPAY/100))
+        mensal_padrao = taxa_mensal * (1-(IR_PICPAY/100))
+        anual_padrao = taxa_anual * (1-(IR_PICPAY/100))
+
+        #Média ponderada para calcular a nova taxa de acordo com o investimento
+        diaria = ((diaria_bonus * 10**5) + (diaria_padrao * EXC_INVESTIMENTO))/ (10**5 + EXC_INVESTIMENTO)
+        mensal = ((mensal_bonus * 10**5) + (mensal_padrao * EXC_INVESTIMENTO))/ (10**5 + EXC_INVESTIMENTO)
+        anual = ((anual_bonus * 10**5) + (anual_padrao * EXC_INVESTIMENTO))/ (10**5 + EXC_INVESTIMENTO)
+
+
 elif PLATAFORMA == plataforma_options[1]:
     title = '🟪 Taxas Nubank | Considerando Imposto de Renda'
     diaria = taxa_diaria * (1-(IR_NUBANK/100))
     mensal = taxa_mensal * (1-(IR_NUBANK/100))
     anual = taxa_anual * (1-(IR_NUBANK/100))
 
-with st.expander(title):
+with st.expander(title, expanded=True):
 
     valuesRent = [diaria, mensal, anual]
     stringsRent = ['Diária',
@@ -126,7 +146,7 @@ with st.expander(title):
 
     util.kpi(valuesRent, stringsRent, util.perc)
 
-with st.expander('📈 ROI'):
+with st.expander('📈 ROI', expanded=True):
 
     valuesROI = [INVESTIMENTO * taxa for taxa in valuesRent]
     stringsROI = ['Diária',
