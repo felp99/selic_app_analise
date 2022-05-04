@@ -1,4 +1,5 @@
 from email import utils
+from email.policy import default
 from click import option
 import streamlit as st
 
@@ -13,17 +14,18 @@ comparative = ComparativeComponent()
 
 COMPONENTES = [utils, simulationROI, comparative]
 
-st.set_page_config(page_title=utils.APP_TITLE,
-                   page_icon=utils.APP_EMOJI, 
-                   layout="centered", 
-                   initial_sidebar_state="expanded", 
-                   menu_items=None)
+# st.set_page_config(page_title=utils.APP_TITLE,
+#                    page_icon=utils.APP_EMOJI, 
+#                    layout="centered", 
+#                    initial_sidebar_state="expanded", 
+#                    menu_items=None)
 
 st.title(utils.APP_EMOJI + '' + utils.APP_TITLE)
 
 with st.sidebar:
     selected_component = st.selectbox(label = 'Selecione a página:', 
-                                    options= [c.NAME for c in COMPONENTES])
+                                    options= [c.NAME for c in COMPONENTES], 
+                                    index = 2)
 
 # Itera sobre os componentes e roda aquele escolhido
 for c in COMPONENTES:

@@ -60,16 +60,7 @@ class simulationROIComponent():
         st.markdown('___')
 
         # API de dados da Selic cedido pelo bcb
-
-        @st.cache
-        def fetchData(url):
-            try:
-                response = requests.get(url)
-            except(ConnectionError):
-                st.error('🤖 Sem conexão com a API SELIC')
-            return pd.DataFrame(response.json())
-
-        df = fetchData('http://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json&dataInicial=02/03/2022')
+        df = utils.getSelic(utils.LAST_10_SELIC_DATA)
 
         # Taxa mais recente
         taxa_hoje = float(df['valor'].iloc[-1])
