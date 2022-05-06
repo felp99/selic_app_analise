@@ -1,3 +1,4 @@
+from numpy import number
 import streamlit as st
 import pandas as pd
 import datetime
@@ -72,7 +73,45 @@ class ComparativeComponent():
 
         df['NUBANK'] = df['TAXA NUBANK REAL ACUM'] * self.INVESTIMENTO
         df['PICPAY'] = df['TAXA PICPAY REAL ACUM'] * self.INVESTIMENTO
+
+        self.VF_NUBANK = df['NUBANK'][-1]
+        self.VF_PICPAY = df['PICPAY'][-1]
+
+        if self.VF_NUBANK < self.VF_PICPAY:
+            self.VENCEDOR = utils.PLATAFORMA_OPTIONS[0]
+            self.VENCEDOR_LIMPO = ['PICPAY']
+            self.PERDEDOR_LIMPO = ['NUBANK']
+        else:
+            self.VENCEDOR = utils.PLATAFORMA_OPTIONS[1]
+            self.VENCEDOR_LIMPO = ['NUBANK']
+            self.PERDEDOR_LIMPO = ['PICPAY']
         
+        self.VENCEDOR_VALOR = df[(self.VENCEDOR_LIMPO[0])][-1]
+        self.PERDEDOR_VALOR = df[(self.PERDEDOR_LIMPO[0])][-1]
+
+        selic_hoje = float(df_selic['valor'][0])
+
+        st.markdown(f'### Você ganha mais com: {self.VENCEDOR}')
+
+        columns = st.columns(2)
+
+        delta_valor = (self.VENCEDOR_VALOR - self.PERDEDOR_VALOR) / self.PERDEDOR_VALOR
+
+        with columns[0]:
+            st.metric('💵 Saldo final', 
+                      value = utils.currFormat(self.VENCEDOR_VALOR), 
+                      delta = utils.perc(delta_valor))
+
+        self.TAXA_REAL_VENCEDOR = df[f'TAXA {self.VENCEDOR_LIMPO[0]} REAL ACUM'][-1] - 1
+        self.TAXA_REAL_PERDEDOR = df[f'TAXA {self.PERDEDOR_LIMPO[0]} REAL ACUM'][-1] - 1
+
+        delta_taxa_real = (self.TAXA_REAL_VENCEDOR - self.TAXA_REAL_PERDEDOR) / self.TAXA_REAL_PERDEDOR
+        
+        with columns[1]:
+            st.metric('📈 Rendimento real', 
+                      value = utils.perc(self.TAXA_REAL_VENCEDOR), 
+                      delta = utils.perc(delta_taxa_real))
+                
         fig = px.line(df[['NUBANK', 'PICPAY']])
 
         fig['data'][0]['line']['color']='rgb(97,47,116)'

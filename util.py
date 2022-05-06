@@ -13,7 +13,7 @@ class Utils():
         self.INVESTIMENTO_INICIAL_VALOR = 1000.00
         self.ALL_SELIC_DATA = 'http://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json&dataInicial=02/03/2022'
         self.LAST_10_SELIC_DATA = 'https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados/ultimos/10?formato=json'
-
+        self.PLATAFORMA_OPTIONS = ['💚 Picpay', '💜 Nubank']
         pass
 
     def run(self):
@@ -30,8 +30,11 @@ class Utils():
         for i, value in enumerate(values):
             with _cols[i]:
                 st.metric(label = strings[i],
-                        value = stringFormat(value),
-                        delta_color="normal")
+                          value = stringFormat(value),
+                          delta_color="normal")
+
+    def kpiUnique():
+        pass
 
     def currFormat(self, value):
         return f'R${round(value, 2)}'

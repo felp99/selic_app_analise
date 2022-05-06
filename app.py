@@ -37,5 +37,12 @@ for c in COMPONENTES:
 
 st.markdown('___')
 st.empty()
-st.caption(f'❌ Não é recomendação de investimento')
-st.caption(f'👨🏻‍💻 Repositório: [Selic App Análise Repo](https://github.com/felp99/selic_app_analise)')
+
+c,c2,c3 = st.columns(3)
+
+with c:
+    st.caption(f'❌ Não é recomendação de investimento')
+with c2:
+    st.caption(f'👨🏻‍💻 Repositório: [Selic App Análise Repo](https://github.com/felp99/selic_app_analise)')
+with c3:
+    st.caption('✨ Próxima feature: **Aportes recorrentes**')

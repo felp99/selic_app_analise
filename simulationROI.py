@@ -65,6 +65,7 @@ class simulationROIComponent():
         # Taxa mais recente
         taxa_hoje = float(df['valor'].iloc[-1])
 
+
         # Penúltima taxa mais recente
         taxa_ontem = float(df['valor'].iloc[-1])
 
